@@ -1,0 +1,178 @@
+/**
+ * Java class to answer Problem 1 in Assignment 2. Contains 2 inner classes,
+ * ListReferenceBased and Node, to assist with demonstrating a Linked List.
+ * 
+ * @author Kevin Li
+ * @version February 7, 2018
+ */
+public class TestListReferenceBased {
+	// a static Linked List that will be used in testing
+	private static ListReferenceBased myList;
+	
+	/**
+	 * Main method that demonstrates the linked list using the examples in Assignment 2.
+	 * 
+	 * @param args default
+	 */
+	public static void main(String[] args) {
+		setup();
+		
+		// Display the items in the linked list
+		displayList();
+		
+		// Add Integer Object valued 13 at index 0 and display the items in the linked list
+		myList.add(new Integer(13), 0);
+		displayList();
+		
+		// Add Integer Object valued 17 at index 2 and display the items in the linked list
+		myList.add(new Integer(17), 2);
+		displayList();
+		
+		// Remove Integer Object at index 4 and diplay the items in the linked list
+		myList.remove(4);
+		displayList();
+	}
+	
+	/**
+	 * Set up a linked list used as a demo on Assignment 2.
+	 */
+	private static void setup() {
+		// initialize the linked list
+		myList = new TestListReferenceBased().new ListReferenceBased();
+		
+		// The list on the Assignment sheet is 12, 3, 25, 18
+		// So I add them in that order
+		myList.add(new Integer(12),  0);
+		myList.add(new Integer(3), 1);
+		myList.add(new Integer(25), 2);
+		myList.add(new Integer(18), 3);
+	}
+	
+	/**
+	 * Print out the integer values in the format on Assignment 2.
+	 */
+	private static void displayList() {
+		// print out # of items and some text
+		String output = myList.size() + " Items in the linked list: ";
+		for (int i = 0; i < myList.size(); i++) {
+			// append the integers to the end of String output
+			output += myList.get(i).getValue();
+			
+			//add a comma and space, except for after the last integer
+			if (i != myList.size() - 1)
+				output += ", ";
+		}
+		// print it
+		System.out.println(output);
+	}
+	
+	private class ListReferenceBased {
+		// keeps track of its item count
+		private int numItems;
+		
+		// reference to the first node, which then links to every other one
+		private Node head;
+		
+		/** 
+		 * Constructor that initializes an empty linked list.
+		 */
+		private ListReferenceBased() {
+			head = null;
+			numItems = 0;
+		}
+		
+		/**
+		 * Returns true if the linked list has no nodes, otherwise it returns false.
+		 * 
+		 * @return true if the linked list is empty (no nodes), false otherwise
+		 */
+		private boolean isEmpty() {
+			return numItems == 0;
+		}
+		
+		/**
+		 * Return the number of nodes in the linked list.
+		 * 
+		 * @return number of nodes
+		 */
+		private int size() {
+			return numItems;
+		}
+		
+		/**
+		 * Adds a new node holding the given value at the given index.
+		 * 
+		 * @param value the value we want the new node to have
+		 * @param index the index where we want the new node to be
+		 */
+		private void add(Integer value, int index) {
+			Node curr = head;
+			
+			// curr points to the 
+			index--;
+			if (index == 0) {
+				head = new Node(value);
+				head.setNext(curr);
+			} else {
+				for (int i = 0; i < index ; i++)
+					curr = curr.getNext();
+				Node temp = new Node(value);
+				if (curr != null)
+					temp.setNext(curr.getNext());
+				curr.setNext(temp);
+			}
+			numItems++;
+		}
+		
+		private void remove(int index) {
+			if (index == 0)
+				head = head.getNext();
+			else {
+				Node curr = head;
+				for (int i = 0; i < index - 1; i++)
+					curr = curr.getNext();
+				curr.setNext(curr.getNext().getNext());
+			}
+			numItems--;
+		}
+		
+		private Node get(int index) {
+			Node curr = head;
+			for (int i = 0; i < index; i++)
+				curr = curr.getNext();
+			return curr;
+		}
+		
+		private void removeAll() {
+			while (head != null)
+				head = head.getNext();
+			numItems = 0;
+		}
+	}
+	
+	private class Node {
+		private Node next;
+		private Integer value;
+		
+		private Node(int value) {
+			setValue(value);
+			setNext(null);
+		}
+		
+		private int getValue() {
+			return value;
+		}
+		
+		private Node getNext() {
+			return next;
+		}
+		
+		private void setValue(int value) {
+			this.value = value;
+		}
+		
+		private void setNext(Node next) {
+			this.next = next;
+		}
+	}
+}

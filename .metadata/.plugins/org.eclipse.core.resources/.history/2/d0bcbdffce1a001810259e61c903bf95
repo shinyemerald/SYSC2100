@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class Infix2PostfixCalculator {
+	private static StackReferenceBased opStack;
+	private static StackReferenceBased inStack;
+	
+	public static void main(String[] args) {
+		opStack = new StackReferenceBased();
+		inStack = new StackReferenceBased();
+		
+		String input = "(10 + 3 * 4 / 6)";
+		String test = "a";
+		System.out.println(test.substring(0,1));
+	}
+	
+	private static String convertPostFix(String infix) {
+		int search = infix.length();
+		while (infix.length() != 0) {
+			
+		}
+		return "";
+	}
+	
+	private static int getPostFix(String postfix) {
+		return -1;
+	}
+}

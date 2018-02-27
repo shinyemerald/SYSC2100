@@ -1,0 +1,19 @@
+
+public class StackReferenceBased {
+	
+	public static void main(String[] args) {
+		Object v = new Object();
+		v = (Integer) v;
+		v = 5;
+		System.out.println((v instanceof Integer));
+	}
+	
+	private class Node {
+		private Object data;
+		private Node next;
+		
+		private Node() {
+			
+		}
+	}
+}

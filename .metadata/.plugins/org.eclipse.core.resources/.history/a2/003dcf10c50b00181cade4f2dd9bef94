@@ -1,0 +1,127 @@
+public class TestListReferenceBased {
+	private static ListReferenceBased myList;
+	
+	public static void main(String[] args) {
+		setup();
+		
+		// Display the items in the linked list
+		displayList();
+		
+		//Add 
+		myList.add(13, 0);
+		displayList();
+		
+		myList.add(17, 2);
+		displayList();
+		
+		myList.remove(4);
+		displayList();
+		
+		myList.add(69, 4);
+		displayList();
+	}
+	
+	private static void setup() {
+		myList = new TestListReferenceBased().new ListReferenceBased();
+		myList.add(12,  0);
+		myList.add(3, 1);
+		myList.add(25, 2);
+		myList.add(18, 3);
+	}
+	
+	private static void displayList() {
+		String output = myList.size() + " Items in the linked list: ";
+		for (int i = 0; i < myList.size(); i++) {
+			output += myList.get(i).getValue();
+			if (i != myList.size() - 1)
+				output += ", ";
+		}
+		System.out.println(output);
+	}
+	
+	private class ListReferenceBased {
+		private int numItems;
+		private Node head;
+		
+		private ListReferenceBased() {
+			head = null;
+			numItems = 0;
+		}
+		
+		private boolean isEmpty() {
+			return numItems == 0;
+		}
+		
+		private int size() {
+			return numItems;
+		}
+		
+		private void add(int value, int index) {
+			Node curr = head;
+			index--;
+			if (index == -1) {
+				head = new Node(value);
+				head.setNext(curr);
+			} else {
+				for (int i = 0; i < index ; i++)
+					curr = curr.getNext();
+				Node temp = new Node(value);
+				if (curr != null)
+					temp.setNext(curr.getNext());
+				curr.setNext(temp);
+			}
+			numItems++;
+		}
+		
+		private void remove(int index) {
+			if (index == 0)
+				head = head.getNext();
+			else {
+				Node curr = head;
+				for (int i = 0; i < index - 1; i++)
+					curr = curr.getNext();
+				curr.setNext(curr.getNext().getNext());
+			}
+			numItems--;
+		}
+		
+		private Node get(int index) {
+			Node curr = head;
+			for (int i = 0; i < index; i++)
+				curr = curr.getNext();
+			return curr;
+		}
+		
+		private void removeAll() {
+			while (head != null)
+				head = head.getNext();
+			numItems = 0;
+		}
+	}
+	
+	private class Node {
+		private Node next;
+		private Integer value;
+		
+		private Node(int value) {
+			setValue(value);
+			setNext(null);
+		}
+		
+		private int getValue() {
+			return value;
+		}
+		
+		private Node getNext() {
+			return next;
+		}
+		
+		private void setValue(int value) {
+			this.value = new Integer(value);
+		}
+		
+		private void setNext(Node next) {
+			this.next = next;
+		}
+	}
+}

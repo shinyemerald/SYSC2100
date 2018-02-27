@@ -1,0 +1,84 @@
+/*
+	 * Repeatedly prompt user for filename until a file with such a name exists
+	 * and can be opened.
+	 */
+
+	private static String openFile() {
+
+		BufferedReader keyboardReader = new BufferedReader(
+				new InputStreamReader(System.in));
+
+		String inFilePath = "";
+		BufferedReader inFileReader;
+		boolean pathsOK = false;
+
+		while (!pathsOK) {
+			try {
+				System.out.print("Please enter the path for the input file: ");
+				inFilePath = keyboardReader.readLine();
+				inFileReader = new BufferedReader(new FileReader(inFilePath));
+				pathsOK = true;
+				inFileReader.close();
+			} // try
+			catch (IOException e) {
+				System.out.println(e);
+			} // catch I/O exception
+		} // while
+		return inFilePath;
+	} // method openFiles
+
+	/*
+	 * Helper method to convert a string to a List. Loops over all characters in
+	 * the string and may not be all that efficient - may be better to read in
+	 * the file character by character until we hit whitespace.
+	 */
+
+	private static void convertStringToList(String in, List<Character> out) {
+		char[] input_chars = in.toCharArray();
+		out.clear();
+		for (int i = 0; i < input_chars.length; i++) {
+			out.add(input_chars[i]);
+		}
+	}
+
+	/*
+	 * Iterate over all strings in input file to determine whether the input
+	 * string is a substring in any of these strings. Returns the number of
+	 * times such a match exists.
+	 */
+
+	public static int readAndMatchDocument(String filename,
+			List<Character> pattern, List<Character> Input)
+			throws FileNotFoundException {
+		StringTokenizer tokens;
+		String line, textword;
+		int count = 0;
+		// open file anew to ensure we start at the first character
+		BufferedReader inFileReader = new BufferedReader(new FileReader(
+				filename));
+
+		try {
+			while (true) {
+				line = inFileReader.readLine();
+				if (line == null)
+					break;
+				tokens = new StringTokenizer(line);
+				// for all the words in the line
+				while (tokens.hasMoreTokens()) {
+					textword = tokens.nextToken();
+					convertStringToList(textword, Input);
+					if (findBrute(Input, pattern) != -1)
+						count = count + 1;
+				} // end while tokens
+			} // end while true
+		} catch (IOException e) {
+			System.out.println(e);
+		} // catch I/O exception}
+		try {
+			inFileReader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return count;
+	}

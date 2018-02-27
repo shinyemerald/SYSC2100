@@ -1,0 +1,1 @@
+With the JTable class you can display tables of data, optionally allowing the user to edit the data. JTable does not contain or cache data; it is simply a view of your data. Here is a picture of a typical table displayed within a scroll pane:

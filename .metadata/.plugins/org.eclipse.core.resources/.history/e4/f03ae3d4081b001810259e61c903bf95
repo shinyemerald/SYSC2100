@@ -1,0 +1,80 @@
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class TestInfix2PostfixCalculator {
+	private static StackReferenceBased opStack;
+	private static StackReferenceBased inStack;
+	
+	public static void main(String[] args) {
+		opStack = new StackReferenceBased();
+		inStack = new StackReferenceBased();
+		
+		System.out.println("abc".substring(0, 1));
+		String input = "12*3 - 4 + (18/6)";
+		String result = convertPostFix(input);
+		System.out.println(result);
+	}
+	
+	private static String convertPostFix(String infix) {
+		infix = infix.replaceAll("\\s", "");
+		
+		Object o;
+		char curr;
+		String num = "";
+		String output = "";
+		int i = 0;
+		
+		while (i != infix.length()) {
+			curr = infix.charAt(i);
+			if (precedence(curr) == -1) {
+				if (precedence(infix.charAt(i + 1)) == -1) {
+					int j = i + 1;
+					num = infix.substring(i, j);
+					while (precedence(num.charAt(num.length() - 1)) == -1) {
+						j++;
+						num = infix.substring(i, j);
+					}
+					i = j;
+					output += " " + num;
+				} else
+					output += " " + curr;
+ 			} else {
+				if (curr == ')') {
+					while ((o = opStack.peek()).toString().charAt(0) == '(') {
+						char c = o.toString().charAt(0);
+						if (precedence(c) != 1)
+							output += " " + c;
+					}
+				} else {
+					while (!opStack.isEmpty() && curr != '(' && precedence(opStack.peek().toString().charAt(0)) >= precedence(curr)) {
+						char c = opStack.pop().toString().charAt(0);
+						if (precedence(c) != 1)
+							output += " " + c;
+					}
+					opStack.push(curr);
+				}
+				i++;
+			}
+		}
+		while (!opStack.isEmpty()) {
+			char c = opStack.pop().toString().charAt(0);
+			if (precedence(c) != 1)
+				output += " " + c;
+		}
+		return output.trim();
+	}
+	
+	private static int getPostFix(String postfix) {
+		return -1;
+	}
+	
+	private static int precedence(char op) {
+		if (op == '(' || op == ')')
+			return 1;
+		if (op == '+' || op == '-')
+			return 2;
+		if (op == '*' || op == '/')
+			return 3;
+		return -1;
+	}
+}
